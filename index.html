@@ -75,15 +75,12 @@
   <p id="loading-text">Buscando música...</p>
 </div>
 
-<div id="player-modal" class="hidden">
-  <div class="modal-content">
-    <span id="close-modal">&times;</span>
-    <h3 id="modal-title"></h3>
-    <video id="modal-video" controls></video>
-    <div class="modal-buttons">
-      <a id="audio-download" class="modal-btn" download>Descargar Audio</a>
-      <a id="video-download" class="modal-btn" download>Descargar Video</a>
-    </div>
+<div id="player-container" style="display: none; margin-top: 20px;">
+  <h3 id="player-title"></h3>
+  <video id="player-video" controls width="100%"></video>
+  <div style="margin-top: 10px;">
+    <a id="player-audio-download" class="modal-btn" download>Descargar Audio</a>
+    <a id="player-video-download" class="modal-btn" download>Descargar Video</a>
   </div>
 </div>
 
