@@ -47,7 +47,17 @@
     </div>
   </div>
 
-  <audio id="audio-player" controls style="display: none;"></audio>
+  <div id="player-modal" class="hidden">
+  <div class="modal-content">
+    <span id="close-modal">&times;</span>
+    <h3 id="modal-title"></h3>
+    <video id="modal-video" controls></video>
+    <div class="modal-buttons">
+      <a id="audio-download" class="modal-btn" download>Descargar Audio</a>
+      <a id="video-download" class="modal-btn" download>Descargar Video</a>
+    </div>
+  </div>
+</div>
 
   <script src="api.js"></script>
   <script>
