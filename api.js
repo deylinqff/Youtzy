@@ -1,4 +1,4 @@
-document.getElementById("search-form");
+const searchForm = document.getElementById("search-form");
 const searchInput = document.getElementById("search-input");
 const musicList = document.getElementById("music-list");
 const loadingMessage = document.getElementById("loading-message");
@@ -76,7 +76,6 @@ searchForm.addEventListener("submit", async (e) => {
 
       const image = document.createElement("img");
       image.src = video.miniatura;
-      image.style.cursor = "pointer"; // Agregar el estilo para el cursor
 
       const info = document.createElement("div");
       info.className = "music-info";
@@ -91,32 +90,30 @@ searchForm.addEventListener("submit", async (e) => {
 
       const channel = document.createElement("div");
 
-      // Manejar el clic en la imagen
-      image.onclick = async () => {
-        loadingMessage.style.display = "block";
-        for (let api of videoApis) {
-          try {
-            const res = await fetch(api(video.url));
-            const json = await res.json();
-            const videoUrl = json?.data?.dl || json?.result?.download?.url || json?.downloads?.url || json?.data?.download?.url;
-            if (videoUrl) {
-              loadingMessage.style.display = "none";
-              window.open(videoUrl, "_blank");
-              return;
-            }
-          } catch (e) {
-            console.warn("API video (al hacer clic en la imagen) falló:", e.message);
-          }
-        }
+      image.style.cursor = "pointer";
+image.onclick = async () => {
+  loadingMessage.style.display = "block";
+  for (let api of videoApis) {
+    try {
+      const res = await fetch(api(video.url));
+      const json = await res.json();
+      const videoUrl = json?.data?.dl || json?.result?.download?.url || json?.downloads?.url || json?.data?.download?.url;
+      if (videoUrl) {
         loadingMessage.style.display = "none";
-        alert("No se pudo cargar el video.");
-      };
+        window.open(videoUrl, "_blank");
+        return;
+      }
+    } catch (e) {
+      console.warn("API video (al hacer clic en la imagen) falló:", e.message);
+    }
+  }
+  loadingMessage.style.display = "none";
+  alert("No se pudo cargar el video.");
+};
 
       info.appendChild(title);
       info.appendChild(artist);
       info.appendChild(channel);
-      card.appendChild(image);
-      card.appendChild(info);
       musicList.appendChild(card);
     });
 
