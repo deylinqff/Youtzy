@@ -1,0 +1,192 @@
+/* Fuente general */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to right, #0f0f0f, #1c1c1c);
+  color: #fff;
+  transition: background 0.4s ease;
+}
+
+/* Encabezado */
+.header {
+  background-color: #ff0000;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  animation: fadeDown 1s ease;
+}
+
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.logo {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 1px 1px 4px #000;
+}
+
+.logo i {
+  margin-right: 10px;
+  color: #fff;
+}
+
+/* Contenedor principal */
+.container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1rem;
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Barra de búsqueda */
+.search-box {
+  display: flex;
+  border: 2px solid #444;
+  border-radius: 30px;
+  overflow: hidden;
+  background-color: #181818;
+  transition: box-shadow 0.3s;
+}
+
+.search-box:hover {
+  box-shadow: 0 0 12px #ff0000;
+}
+
+.search-box input {
+  flex: 1;
+  padding: 0.9rem 1.2rem;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+}
+
+.search-box button {
+  background-color: #ff0000;
+  border: none;
+  padding: 0 1.4rem;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #fff;
+  transition: background 0.3s;
+}
+
+.search-box button:hover {
+  background-color: #e10000;
+}
+
+/* Resultados */
+.music-list {
+  margin-top: 2rem;
+}
+
+.result-item {
+  display: flex;
+  align-items: center;
+  background: #222;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 10px;
+  transition: transform 0.3s ease, background 0.3s;
+  cursor: pointer;
+}
+
+.result-item:hover {
+  transform: scale(1.03);
+  background: #2d2d2d;
+}
+
+.result-item img {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  margin-right: 1rem;
+}
+
+.result-item p {
+  flex: 1;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ddd;
+}
+
+.result-item a {
+  text-decoration: none;
+  color: #ff0000;
+  font-weight: bold;
+}
+
+/* Audio player */
+#audio-player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #111;
+  color: #fff;
+  padding: 1rem;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+  display: none;
+  animation: slideUp 0.5s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0.5;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Carga */
+#loading-message {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.loader span {
+  width: 12px;
+  height: 12px;
+  background: #ff0000;
+  display: inline-block;
+  margin: 0 4px;
+  border-radius: 50%;
+  animation: blink 1.2s infinite ease-in-out;
+}
+
+.loader span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.loader span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
