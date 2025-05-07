@@ -1,8 +1,8 @@
-/* Fuente general */
+/* Fuente y fondo general */
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to right, #0f0f0f, #1c1c1c);
+  background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
   color: #fff;
   transition: background 0.4s ease;
 }
@@ -10,16 +10,17 @@ body {
 /* Encabezado */
 .header {
   background-color: #ff0000;
-  padding: 1rem;
+  padding: 1.5rem 1rem;
   text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   animation: fadeDown 1s ease;
+  border-bottom: 1px solid #aa0000;
 }
 
 @keyframes fadeDown {
   from {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(-30px);
   }
   to {
     opacity: 1;
@@ -28,10 +29,11 @@ body {
 }
 
 .logo {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: bold;
   color: #fff;
-  text-shadow: 1px 1px 4px #000;
+  text-shadow: 2px 2px 6px #000;
+  letter-spacing: 1px;
 }
 
 .logo i {
@@ -41,16 +43,16 @@ body {
 
 /* Contenedor principal */
 .container {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 1rem;
+  max-width: 960px;
+  margin: 3rem auto;
+  padding: 1.5rem;
   animation: fadeIn 1s ease-in-out;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: scale(0.97);
+    transform: scale(0.95);
   }
   to {
     opacity: 1;
@@ -61,82 +63,95 @@ body {
 /* Barra de búsqueda */
 .search-box {
   display: flex;
-  border: 2px solid #444;
+  border: 2px solid #333;
   border-radius: 30px;
   overflow: hidden;
   background-color: #181818;
-  transition: box-shadow 0.3s;
+  transition: box-shadow 0.3s ease, border 0.3s;
 }
 
 .search-box:hover {
   box-shadow: 0 0 12px #ff0000;
+  border-color: #ff0000;
 }
 
 .search-box input {
   flex: 1;
-  padding: 0.9rem 1.2rem;
+  padding: 1rem 1.5rem;
   border: none;
   background: transparent;
   color: #fff;
-  font-size: 1rem;
+  font-size: 1.1rem;
   outline: none;
 }
 
 .search-box button {
   background-color: #ff0000;
   border: none;
-  padding: 0 1.4rem;
+  padding: 0 1.6rem;
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   color: #fff;
   transition: background 0.3s;
 }
 
 .search-box button:hover {
-  background-color: #e10000;
+  background-color: #d10000;
 }
 
 /* Resultados */
 .music-list {
-  margin-top: 2rem;
+  margin-top: 2.5rem;
 }
 
 .result-item {
   display: flex;
   align-items: center;
-  background: #222;
-  margin-bottom: 1rem;
+  background: #1e1e1e;
+  margin-bottom: 1.5rem;
   padding: 1rem;
-  border-radius: 10px;
+  border-radius: 12px;
   transition: transform 0.3s ease, background 0.3s;
   cursor: pointer;
 }
 
 .result-item:hover {
-  transform: scale(1.03);
-  background: #2d2d2d;
+  transform: scale(1.02);
+  background: #2a2a2a;
 }
 
 .music-card img {
-  width: 120px; /* Consistent image width */
-  height: 120px; /* Consistent image height */
-  border-radius: 8px; /* Rounded corners for images */
-  object-fit: cover; /* Ensure images fill the container without distortion */
-  margin-bottom: 10px; /* Space between image and text */
+  width: 60px;
+  height: 60px;
+  border-radius: 6px;
+  object-fit: cover;
+  margin-right: 1rem;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
 }
 
 .result-item p {
-  flex: 1;
   margin: 0;
   font-size: 1rem;
   font-weight: 500;
-  color: #ddd;
+  color: #eaeaea;
 }
 
 .result-item a {
   text-decoration: none;
-  color: #ff0000;
+  color: #ff3333;
   font-weight: bold;
+  font-size: 0.95rem;
+}
+
+/* Títulos generales y secciones */
+h2, h3 {
+  margin: 1.5rem 0 1rem;
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 3px #000;
+  border-left: 4px solid #ff0000;
+  padding-left: 12px;
 }
 
 /* Audio player */
@@ -156,7 +171,7 @@ body {
 @keyframes slideUp {
   from {
     transform: translateY(100%);
-    opacity: 0.5;
+    opacity: 0.4;
   }
   to {
     transform: translateY(0);
@@ -164,7 +179,7 @@ body {
   }
 }
 
-/* Carga */
+/* Cargando */
 #loading-message {
   text-align: center;
   margin-top: 2rem;
@@ -180,12 +195,8 @@ body {
   animation: blink 1.2s infinite ease-in-out;
 }
 
-.loader span:nth-child(2) {
-  animation-delay: 0.2s;
-}
-.loader span:nth-child(3) {
-  animation-delay: 0.4s;
-}
+.loader span:nth-child(2) { animation-delay: 0.2s; }
+.loader span:nth-child(3) { animation-delay: 0.4s; }
 
 @keyframes blink {
   0%, 100% { opacity: 0.3; transform: scale(1); }
