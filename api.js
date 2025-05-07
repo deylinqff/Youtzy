@@ -170,25 +170,59 @@ searchForm.addEventListener("submit", async (e) => {
         alert("No se pudo obtener el video.");
       };
 
-image.style.cursor = "pointer";
+const playerContainer = document.getElementById("player-container");
+const playerTitle = document.getElementById("player-title");
+const playerVideo = document.getElementById("player-video");
+const audioDownload = document.getElementById("player-audio-download");
+const videoDownload = document.getElementById("player-video-download");
+
 image.onclick = async () => {
   loadingMessage.style.display = "block";
+  playerContainer.style.display = "none";
+
+  let videoUrl = null;
   for (let api of videoApis) {
     try {
       const res = await fetch(api(video.url));
       const json = await res.json();
-      const videoUrl = json?.data?.dl || json?.result?.download?.url || json?.downloads?.url || json?.data?.download?.url;
-      if (videoUrl) {
-        loadingMessage.style.display = "none";
-        window.open(videoUrl, "_blank");
-        return;
-      }
+      videoUrl = json?.data?.dl || json?.result?.download?.url || json?.downloads?.url || json?.data?.download?.url;
+      if (videoUrl) break;
     } catch (e) {
-      console.warn("API video (al hacer clic en la imagen) falló:", e.message);
+      console.warn("API video falló:", e.message);
     }
   }
+
+  let audioUrl = null;
+  for (let api of audioApis) {
+    try {
+      const res = await fetch(api(video.url));
+      const json = await res.json();
+      audioUrl = json?.result?.url || json?.data?.url || json?.data?.dl;
+      if (audioUrl) break;
+    } catch (e) {
+      console.warn("API audio falló:", e.message);
+    }
+  }
+
   loadingMessage.style.display = "none";
-  alert("No se pudo cargar el video.");
+
+  if (videoUrl) {
+    playerTitle.textContent = video.titulo;
+    playerVideo.src = videoUrl;
+    videoDownload.href = videoUrl;
+    videoDownload.download = `${video.titulo}.mp4`;
+  }
+
+  if (audioUrl) {
+    audioDownload.href = audioUrl;
+    audioDownload.download = `${video.titulo}.mp3`;
+  }
+
+  if (videoUrl || audioUrl) {
+    playerContainer.style.display = "block";
+  } else {
+    alert("No se pudo cargar el video ni el audio.");
+  }
 };
 
       info.appendChild(title);
