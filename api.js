@@ -76,6 +76,7 @@ searchForm.addEventListener("submit", async (e) => {
 
       const image = document.createElement("img");
       image.src = video.miniatura;
+      image.style.cursor = "pointer"; // Agregar el estilo para el cursor
 
       const info = document.createElement("div");
       info.className = "music-info";
@@ -90,84 +91,25 @@ searchForm.addEventListener("submit", async (e) => {
 
       const channel = document.createElement("div");
 
-      const playBtn = document.createElement("button");
-      playBtn.className = "play-button";
-      playBtn.innerHTML = `<i class="fas fa-play"></i> Play`;
-
-      const downloadAudioBtn = document.createElement("button");
-      downloadAudioBtn.className = "download-button";
-      downloadAudioBtn.innerHTML = `<i class="fas fa-music"></i> audio`;
-
-      playBtn.onclick = async () => {
-        playBtn.textContent = "Carg...";
-        for (let api of audioApis) {
-          try {
-            const res = await fetch(api(video.url));
-            const json = await res.json();
-            const audioUrl = json?.result?.url || json?.data?.url || json?.data?.dl;
-            if (audioUrl) {
-              audioPlayer.src = audioUrl;
-              audioPlayer.style.display = "block";
-              audioPlayer.play();
-              playBtn.textContent = "audio";
-              return;
-            }
-          } catch (e) {
-            console.warn("API audio falló:", e.message);
-          }
-        }
-        playBtn.textContent = "Error";
-        alert("No se pudo obtener el audio.");
-      };
-
-      downloadAudioBtn.onclick = async () => {
-        downloadAudioBtn.textContent = "Busc...";
-        for (let api of audioApis) {
-          try {
-            const res = await fetch(api(video.url));
-            const json = await res.json();
-            const audioUrl = json?.result?.url || json?.data?.url || json?.data?.dl;
-            if (audioUrl) {
-              const a = document.createElement("a");
-              a.href = audioUrl;
-              a.download = `${video.titulo}.mp3`;
-              a.click();
-              downloadAudioBtn.textContent = "audio";
-              return;
-            }
-          } catch (e) {
-            console.warn("API audio (descarga) falló:", e.message);
-          }
-        }
-        downloadAudioBtn.textContent = "Error";
-        alert("No se pudo descargar el audio.");
-      };
-
-      const videoBtn = document.createElement("button");
-      videoBtn.className = "download-button";
-      videoBtn.innerHTML = `<i class="fas fa-video"></i> video`;
-
-      videoBtn.onclick = async () => {
-        videoBtn.textContent = "Busc...";
+      // Manejar el clic en la imagen
+      image.onclick = async () => {
+        loadingMessage.style.display = "block";
         for (let api of videoApis) {
           try {
             const res = await fetch(api(video.url));
             const json = await res.json();
             const videoUrl = json?.data?.dl || json?.result?.download?.url || json?.downloads?.url || json?.data?.download?.url;
             if (videoUrl) {
-              const a = document.createElement("a");
-              a.href = videoUrl;
-              a.download = `${video.titulo}.mp4`;
-              a.click();
-              videoBtn.textContent = "video";
+              loadingMessage.style.display = "none";
+              window.open(videoUrl, "_blank");
               return;
             }
           } catch (e) {
-            console.warn("API video falló:", e.message);
+            console.warn("API video (al hacer clic en la imagen) falló:", e.message);
           }
         }
-        videoBtn.textContent = "Error";
-        alert("No se pudo obtener el video.");
+        loadingMessage.style.display = "none";
+        alert("No se pudo cargar el video.");
       };
 
       info.appendChild(title);
@@ -175,9 +117,6 @@ searchForm.addEventListener("submit", async (e) => {
       info.appendChild(channel);
       card.appendChild(image);
       card.appendChild(info);
-      card.appendChild(playBtn);
-      card.appendChild(downloadAudioBtn);
-      card.appendChild(videoBtn);
       musicList.appendChild(card);
     });
 
