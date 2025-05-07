@@ -117,12 +117,12 @@ body {
   background: #2d2d2d;
 }
 
-.result-item img {
-  width: 10px;
-  height: 10px;
-  object-fit: cover;
-  border-radius: 5px;
-  margin-right: 0.8rem;
+.music-card img {
+  width: 120px; /* Consistent image width */
+  height: 120px; /* Consistent image height */
+  border-radius: 8px; /* Rounded corners for images */
+  object-fit: cover; /* Ensure images fill the container without distortion */
+  margin-bottom: 10px; /* Space between image and text */
 }
 
 .result-item p {
