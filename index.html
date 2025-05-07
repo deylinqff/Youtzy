@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Youtzy - Descarga y escucha música</title>
+
+  <meta name="description" content="Youtzy es un buscador de música tipo SnapTube para buscar, reproducir y descargar música.">
+  <meta name="keywords" content="Youtzy, música, descargar, escuchar, YouTube, mp3">
+  <meta name="author" content="Youtzy">
+
+  <link rel="icon" href="https://www.youtube.com/s/desktop/34f28e62/img/favicon_32x32.png" type="image/png">
+  <link rel="manifest" href="manifest.json" />
+
+  <meta property="og:title" content="Youtzy - Música al instante">
+  <meta property="og:description" content="Busca y descarga música de YouTube fácilmente con Youtzy.">
+  <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg">
+  <meta property="og:type" content="website">
+
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+  <header class="header">
+    <h1 class="logo">
+      <i class="fab fa-youtube"></i> Youtzy
+    </h1>
+  </header>
+
+  <div class="container">
+    <form id="search-form">
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="Buscar canciones o artistas..." required>
+        <button type="submit"><i class="fas fa-search"></i></button>
+      </div>
+    </form>
+
+    <div id="loading-message" style="display: none;">
+      <div class="loader"><span></span><span></span><span></span></div>
+      <p id="loading-text">Buscando música...</p>
+    </div>
+
+    <div class="music-list" id="music-list">
+      <!-- Canciones aparecerán aquí -->
+    </div>
+  </div>
+
+  <audio id="audio-player" controls style="display: none;"></audio>
+
+  <script src="api.js"></script>
+  <script>
+    const audioPlayer = document.getElementById('audio-player');
+
+    function reproducirCancion(url) {
+      audioPlayer.src = url;
+      audioPlayer.style.display = "block";
+      audioPlayer.play();
+    }
+
+    audioPlayer.addEventListener("ended", () => {
+      audioPlayer.style.display = "none";
+    });
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
+
+    const loadingText = document.getElementById('loading-text');
+    let dotCount = 0;
+    setInterval(() => {
+      dotCount = (dotCount + 1) % 4;
+      loadingText.textContent = `Buscando música${'.'.repeat(dotCount)}`;
+    }, 500);
+  </script>
+</body>
+</html>
