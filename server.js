@@ -8,47 +8,51 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 const SITES_DIR = path.join(__dirname, 'sites');
-
 if (!fs.existsSync(SITES_DIR)) fs.mkdirSync(SITES_DIR);
 
-app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use('/sites', express.static(SITES_DIR));
 
-// HTML principal
+// Para recibir HTML
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Configuración para subir ZIP
-const storage = multer({ dest: 'uploads/' });
-app.post('/upload', storage.single('siteZip'), async (req, res) => {
-  const siteName = `site_${Date.now()}`;
-  const sitePath = path.join(SITES_DIR, siteName);
+// Cargar archivo ZIP
+const upload = multer({ dest: 'uploads/' });
+app.post('/upload', upload.single('siteZip'), async (req, res) => {
+  const siteId = `site_${Date.now()}`;
+  const sitePath = path.join(SITES_DIR, siteId);
   fs.mkdirSync(sitePath);
 
   fs.createReadStream(req.file.path)
     .pipe(unzipper.Extract({ path: sitePath }))
     .on('close', () => {
-      fs.unlinkSync(req.file.path);
-      res.send(`Tu sitio está disponible en: <a href="/sites/${siteName}">/sites/${siteName}</a>`);
+      fs.unlinkSync(req.file.path); // eliminar ZIP temporal
+      res.redirect(`/sites/${siteId}/`);
+    })
+    .on('error', (err) => {
+      console.error('Error descomprimiendo:', err);
+      res.status(500).send('Error descomprimiendo el archivo');
     });
 });
 
-// Clonar repositorio GitHub
+// Clonar repo de GitHub
 app.post('/github', async (req, res) => {
-  const { repoUrl } = req.body;
-  const siteName = `site_${Date.now()}`;
-  const sitePath = path.join(SITES_DIR, siteName);
+  const repoUrl = req.body.repoUrl;
+  const siteId = `site_${Date.now()}`;
+  const sitePath = path.join(SITES_DIR, siteId);
 
+  const git = simpleGit();
   try {
-    await simpleGit().clone(repoUrl, sitePath);
-    res.send(`Tu sitio está disponible en: <a href="/sites/${siteName}">/sites/${siteName}</a>`);
+    await git.clone(repoUrl, sitePath);
+    res.redirect(`/sites/${siteId}/`);
   } catch (err) {
-    res.status(500).send('Error al clonar el repositorio. Asegúrate que sea público.');
+    console.error('Error clonando:', err.message);
+    res.status(500).send('Error al clonar el repositorio');
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`Servidor funcionando en http://localhost:${PORT}`);
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
