@@ -3,20 +3,87 @@
 <head>
   <meta charset="UTF-8">
   <title>Sube tu Sitio Web</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f9;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #2c3e50;
+    }
+
+    h2 {
+      font-size: 18px;
+      margin-top: 30px;
+      margin-bottom: 10px;
+      color: #34495e;
+    }
+
+    form {
+      margin-top: 10px;
+    }
+
+    input[type="file"],
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    button {
+      background-color: #3498db;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+  </style>
 </head>
 <body>
-  <h1>Crear tu propia página web</h1>
+  <div class="container">
+    <h1>Crear tu propia página web</h1>
 
-  <h2>Subir un archivo ZIP</h2>
-  <form action="/upload" method="post" enctype="multipart/form-data">
-    <input type="file" name="siteZip" accept=".zip" required>
-    <button type="submit">Subir</button>
-  </form>
+    <h2>Subir un archivo ZIP</h2>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+      <input type="file" name="siteZip" accept=".zip" required>
+      <button type="submit">Subir</button>
+    </form>
 
-  <h2>O usar un repositorio de GitHub</h2>
-  <form action="/github" method="post">
-    <input type="text" name="repoUrl" placeholder="https://github.com/user/repo" required>
-    <button type="submit">Usar repositorio</button>
-  </form>
+    <h2>O usar un repositorio de GitHub</h2>
+    <form action="/github" method="post">
+      <input type="text" name="repoUrl" placeholder="https://github.com/user/repo" required>
+      <button type="submit">Usar repositorio</button>
+    </form>
+  </div>
 </body>
 </html>
