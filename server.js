@@ -43,16 +43,22 @@ app.post('/github', async (req, res) => {
   const siteId = `site_${Date.now()}`;
   const sitePath = path.join(SITES_DIR, siteId);
 
+  console.log(`Intentando clonar: ${repoUrl} en ${sitePath}`);
+
   const git = simpleGit();
   try {
     await git.clone(repoUrl, sitePath);
-    res.redirect(`/sites/${siteId}/`);
+    const indexPath = path.join(sitePath, 'index.html');
+
+    if (fs.existsSync(indexPath)) {
+      console.log(`Clonación exitosa. Redirigiendo a /sites/${siteId}/`);
+      res.redirect(`/sites/${siteId}/`);
+    } else {
+      console.warn(`El repositorio no contiene index.html`);
+      res.status(400).send('El repositorio no contiene un archivo index.html en la raíz.');
+    }
   } catch (err) {
     console.error('Error clonando:', err.message);
-    res.status(500).send('Error al clonar el repositorio');
+    res.status(500).send('Error al clonar el repositorio. Asegúrate de que sea público y válido.');
   }
-});
-
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
