@@ -103,7 +103,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>@Crear tu propia página web</h1>
+    <h1>Crea tu propia página web</h1>
 
     <h2>Subir un archivo ZIP</h2>
     <form id="zipForm" enctype="multipart/form-data">
@@ -112,7 +112,7 @@
     </form>
 
     <h2>O usar un repositorio de GitHub</h2>
-    <form id="githubForm">
+    <form id="githubForm" enctype="application/x-www-form-urlencoded">
       <input type="text" name="repoUrl" placeholder="https://github.com/usuario/repositorio" required>
       <button type="submit">Usar repositorio</button>
     </form>
@@ -125,6 +125,7 @@
     const githubForm = document.getElementById('githubForm');
     const statusMsg = document.getElementById('statusMsg');
 
+    // Subir archivo ZIP
     zipForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const formData = new FormData(zipForm);
@@ -144,10 +145,12 @@
       }
     });
 
+    // Clonar repositorio de GitHub
     githubForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const formData = new FormData(githubForm);
       statusMsg.textContent = 'Clonando repositorio...';
+      statusMsg.classList.remove('error');
 
       const response = await fetch('/github', {
         method: 'POST',
