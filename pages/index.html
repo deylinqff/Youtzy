@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Buscador YouTube</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 2rem;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    #search-box {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    input[type="text"] {
+      width: 300px;
+      padding: 0.7rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px 0 0 5px;
+    }
+    button {
+      padding: 0.7rem 1rem;
+      border: none;
+      background: #0070f3;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 0 5px 5px 0;
+    }
+    .video-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+    .video-card {
+      width: 300px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .video-card img {
+      width: 100%;
+      height: auto;
+    }
+    .video-card .info {
+      padding: 1rem;
+    }
+    .video-card h3 {
+      font-size: 1rem;
+      margin: 0 0 0.5rem 0;
+    }
+    .video-card p {
+      margin: 0.3rem 0;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    .download-btn {
+      margin-top: 1rem;
+      padding: 0.5rem;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Buscador de Videos de YouTube</h1>
+  <div id="search-box">
+    <input type="text" id="query" placeholder="Busca canciones o videos...">
+    <button onclick="search()">Buscar</button>
+  </div>
+
+  <div class="video-list" id="results"></div>
+
+  <script>
+    async function search() {
+      const q = document.getElementById("query").value;
+      const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+      const data = await res.json();
+      const contenedor = document.getElementById("results");
+      contenedor.innerHTML = "";
+
+      (data.resultado || []).forEach(video => {
+        const card = document.createElement("div");
+        card.className = "video-card";
+        card.innerHTML = `
+          <img src="${video.miniatura}" alt="miniatura">
+          <div class="info">
+            <h3>${video.titulo}</h3>
+            <p><strong>Canal:</strong> ${video.canal}</p>
+            <p><strong>Vistas:</strong> ${video.vistas.toLocaleString()}</p>
+            <p><strong>Duración:</strong> ${video.duracion}</p>
+            <button class="download-btn" onclick="descargar('${video.url}')">Descargar</button>
+          </div>
+        `;
+        contenedor.appendChild(card);
+      });
+    }
+
+    function descargar(url) {
+      const finalUrl = `https://api.siputzx.my.id/api/d/ytmp4?url=${encodeURIComponent(url)}`;
+      window.open(finalUrl, "_blank");
+    }
+  </script>
+</body>
+</html>
