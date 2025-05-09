@@ -1,34 +1,38 @@
-import play from 'play-dl';
+const express = require('express');
+const ytSearch = require('yt-search');
+const cors = require('cors');
 
-export default async function handler(req, res) {
-  const query = req.query.q || "";
+const app = express();
+app.use(cors());
 
+app.get('/search', async (req, res) => {
+  const q = req.query.q || 'lofi';
   try {
-    // Buscar directamente con límite
-    const results = await play.search(query, { limit: 50 });
+    const r = await ytSearch(q);
+    const unique = new Set();
+    const results = [];
 
-    // Filtrar y formatear resultados
-    const videos = results
-      .filter(v => v.type === 'video') // Filtrar solo videos
-      .map(video => ({
-        titulo: video.title,
-        miniatura: video.thumbnails?.[0]?.url || '',
-        canal: video.channel.name || 'Desconocido',
-        publicado: 'No disponible', // El dato no está disponible en play-dl
-        duracion: video.durationRaw,
-        vistas: video.views || 0, // Manejar vistas como número
-        url: video.url
-      }));
+    for (const v of r.videos) {
+      if (!unique.has(v.videoId)) {
+        unique.add(v.videoId);
+        results.push({
+          titulo: v.title,
+          url: v.url,
+          canal: v.author.name,
+          vistas: v.views,
+          duracion: v.timestamp,
+          miniatura: v.thumbnail
+        });
+      }
+      if (results.length >= 50) break;
+    }
 
-    // Responder con resultados
-    res.status(200).json({
-      status: true,
-      cantidad: videos.length,
-      resultado: videos
-    });
-
-  } catch (error) {
-    console.error("Error al buscar:", error);
-    res.status(500).json({ status: false, error: "Error al buscar videos" });
+    res.json({ status: true, resultado: results });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: false, error: 'Error al buscar' });
   }
-}
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Servidor activo en puerto ${PORT}`));
